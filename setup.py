@@ -13,7 +13,7 @@ setup(
     install_requires=(
         'pydrive',
         'google',
-        'oath2client'
+        'oauth2client'
     ),
     include_package_data=True,   # See MANIFEST.in
 )
