@@ -4,6 +4,9 @@ from pydrive.drive import GoogleDrive
 from google.colab import auth
 from oauth2client.client import GoogleCredentials
 
+# These are file extensions we know PyDrive chokes when trying to download
+INVALID_EXTS = ['.ipynb', '.gdoc']
+
 def sync_google_drive_folder(folder_id):
     # 1. Authenticate and create the PyDrive client.
     auth.authenticate_user()
@@ -26,8 +29,11 @@ def sync_google_drive_folder(folder_id):
 
     for file in file_list:
         fname = os.path.join(LOCAL_PATH, file['title'])
-        if fname.endswith('.ipynb'):
-            continue
+        
+        # Only copy files that have extensions it is possible to copy
+        for ext in INVALID_EXTS:
+            if fname.endswith(ext):
+                continue
 
         f_ = drive.CreateFile({'id': file['id']})
         f_.GetContentFile(fname)
