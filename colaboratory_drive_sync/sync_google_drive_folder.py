@@ -34,9 +34,12 @@ def sync_google_drive_folder(folder_id):
         for ext in INVALID_EXTS:
             if fname.endswith(ext):
                 continue
-
-        f_ = drive.CreateFile({'id': file['id']})
-        f_.GetContentFile(fname)
+        try:
+            f_ = drive.CreateFile({'id': file['id']})
+            f_.GetContentFile(fname)
+        except Error as error:
+            print("File name:", fname)
+            print("Error:", error)
 
           # print('\ntitle: %s' % file['title'])
           # print('id: %s' % file['id'])
